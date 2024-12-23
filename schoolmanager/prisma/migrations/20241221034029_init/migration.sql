@@ -44,7 +44,6 @@ CREATE TABLE "Teacher" (
     "img" TEXT,
     "bloodType" TEXT NOT NULL,
     "sex" "UserSex" NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Teacher_pkey" PRIMARY KEY ("id")
 );
