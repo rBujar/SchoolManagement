@@ -3,17 +3,14 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, announcementsData } from "@/lib/data";
+import prisma from "@/lib/prisma";
+import { ITEM_PER_PAGE } from "@/lib/settings";
+import { Announcement, Class, Prisma } from "@prisma/client";
 import { Zen_Dots } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
-type Announcement = {
-    id: number;
-    title: string;
-    class: string;
-    date:string;
-
-};
+type AnnouncementList = Announcement & {class: Class}
 
 const columns = [
     {
@@ -39,29 +36,70 @@ const columns = [
     },
 ];
 
-const AnnouncementListPage = () => {
-    const renderRow = (item: Announcement) => (
-        <tr
-            key={item.id}
-            className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
-        >
-            <td className="flex items-center gap-4 p-4">{item.title}</td>
-            <td >{item.class}</td>
-            <td className="hidden md:table-cell">{item.date}</td>
-    
-            <td className="">
-                <div className="flex items-center gap-2">
-                    
-                    {role === "admin" && (
-                        <>
-                        <FormModal table="announcement" type="update" data={item}/>
-                        <FormModal table="announcement" type="delete" id={item.id}/>
-                        </>
-                    )}
-                </div>
-            </td>
-        </tr>
-    );
+const renderRow = (item: AnnouncementList) => (
+    <tr
+        key={item.id}
+        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
+    >
+        <td className="flex items-center gap-4 p-4">{item.title}</td>
+        <td >{item.class.name}</td>
+        <td className="hidden md:table-cell">{new Intl.DateTimeFormat("en-Us").format(item.date)}</td>
+
+        <td className="">
+            <div className="flex items-center gap-2">
+                
+                {role === "admin" && (
+                    <>
+                    <FormModal table="announcement" type="update" data={item}/>
+                    <FormModal table="announcement" type="delete" id={item.id}/>
+                    </>
+                )}
+            </div>
+        </td>
+    </tr>
+);
+
+const AnnouncementListPage = async ({
+    searchParams,
+}: {
+    searchParams: { [key: string]: string | undefined };
+}) => {
+    const resolvedParams = await Promise.resolve(searchParams);
+
+    const { page, ...queryParams } = resolvedParams;
+
+    const p = page ? parseInt(page) : 1;
+
+    // URL PARAMS CONDITION
+
+    const query: Prisma.AnnouncementWhereInput = {};
+
+    if (queryParams) {
+        for (const [key, value] of Object.entries(queryParams)) {
+            if (value !== undefined) {
+                switch (key) {
+                    case "search":
+                        query.title = { contains: value, mode: "insensitive" };
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    const [data, count] = await prisma.$transaction([
+        prisma.announcement.findMany({
+            where: query,
+            include: {
+                class: true,
+            },
+            take: ITEM_PER_PAGE,
+            skip: ITEM_PER_PAGE * (p - 1),
+        }),
+        prisma.announcement.count({ where: query }),
+    ]);
+
 
     return (
         <div className="bg-white p4 rounded-md flex-1 m-4 mt-0">
@@ -85,11 +123,11 @@ const AnnouncementListPage = () => {
             </div>
             {/* LIST */}
             <div className="">
-                <Table columns={columns} renderRow={renderRow} data={announcementsData} />
+                <Table columns={columns} renderRow={renderRow} data={data} />
             </div>
             {/* PAGINATION */}
             <div className="">
-                <Pagination />
+                <Pagination page={p} count={count}/>
             </div>
         </div>
     );
