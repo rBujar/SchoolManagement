@@ -2,16 +2,15 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, classesData } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
+import { role } from "@/lib/utils";
 import { Class, Prisma, Teacher } from "@prisma/client";
 import { Zen_Dots } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
-type ClassList = Class & {supervisor: Teacher}
-
+type ClassList = Class & { supervisor: Teacher };
 
 const columns = [
     {
@@ -33,11 +32,14 @@ const columns = [
         accessor: "supervisor",
         className: "hidden md:table-cell",
     },
-    {
-        header: "Actions",
-        accessor: "actions",
-        className: "hidden md:table-cell",
-    },
+    ...(role === "admin"
+        ? [
+            {
+                header: "Actions",
+                accessor: "actions",
+            },
+        ]
+        : []),
 ];
 
 const renderRow = (item: ClassList) => (
@@ -48,7 +50,9 @@ const renderRow = (item: ClassList) => (
         <td className="flex items-center gap-4 p-4">{item.name}</td>
         <td className="hidden md:table-cell">{item.capacity}</td>
         <td className="hidden md:table-cell">{item.name[0]}</td>
-        <td className="hidden md:table-cell">{item.supervisor.name + " " + item.supervisor.surname}</td>
+        <td className="hidden md:table-cell">
+            {item.supervisor.name + " " + item.supervisor.surname}
+        </td>
         <td className="">
             <div className="flex items-center gap-2">
                 {role === "admin" && (
@@ -86,7 +90,7 @@ const ClassListPage = async ({
                     case "search":
                         query.name = { contains: value, mode: "insensitive" };
                         break;
-                        default:
+                    default:
                         break;
                 }
             }
@@ -129,7 +133,7 @@ const ClassListPage = async ({
             </div>
             {/* PAGINATION */}
             <div className="">
-                <Pagination page={p} count={count}/>
+                <Pagination page={p} count={count} />
             </div>
         </div>
     );

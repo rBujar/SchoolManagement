@@ -2,9 +2,9 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, lessonsData } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
+import { role } from "@/lib/utils";
 import { Class, Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 import { Zen_Dots } from "next/font/google";
 import Image from "next/image";
@@ -27,11 +27,10 @@ const columns = [
         className: "hidden md:table-cell",
     },
 
-    {
+  ...(role === "admim" ? [{
         header: "Actions",
         accessor: "actions",
-        className: "hidden md:table-cell",
-    },
+    }] : [])
 ];
 
 const renderRow = (item: LessonList) => (

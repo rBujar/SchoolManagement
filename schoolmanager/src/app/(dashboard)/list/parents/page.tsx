@@ -2,7 +2,7 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, parentsData } from "@/lib/data";
+import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Parent, Prisma, Student } from "@prisma/client";
@@ -33,11 +33,10 @@ const columns = [
         accessor: "address",
         className: "hidden md:table-cell",
     },
-    {
+   ...(role === "admin" || role === "teacher" ? [ {
         header: "Actions",
         accessor: "actions",
-        className: "hidden md:table-cell",
-    },
+    }] : [])
 ];
 
 const renderRow = (item: ParentList) => (
