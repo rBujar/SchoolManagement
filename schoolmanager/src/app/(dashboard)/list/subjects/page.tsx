@@ -2,12 +2,12 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, subjectsData } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
+import { role } from "@/lib/utils";
 import { Prisma, Subject, Teacher } from "@prisma/client";
 import { Zen_Dots } from "next/font/google";
-import Image from "next/image";
+import Image from "next/image"; 
 import Link from "next/link";
 
 type SubjectList = Subject & {teachers: Teacher[]}
