@@ -1,15 +1,15 @@
 import { auth } from "@clerk/nextjs/server";
 
-let role: string | null = null;
-let currentUserId: string | null = null;
+// let role: string | null = null;
+// let currentUserId: string | null = null;
 
-(async () => {
-    const { userId, sessionClaims } = await auth();
-    role = (sessionClaims?.metadata as { role?: string })?.role || null;
-    currentUserId = userId || null;
-})();
+// (async () => {
+//     const { userId, sessionClaims } = await auth();
+//     role = (sessionClaims?.metadata as { role?: string })?.role || null;
+//     currentUserId = userId || null;
+// })();
 
-export { role, currentUserId };
+// export { role, currentUserId };
 
 const currentWorkWeek = () => {
     const today = new Date();

@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteClass, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteClass, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ import { FormContainerProps } from "./FormContainer";
         subject: deleteSubject,
         class: deleteClass,
         teacher: deleteTeacher,
-        student: deleteSubject,
+        student: deleteStudent,
         parent: deleteSubject,
         lesson: deleteSubject,
         exam: deleteSubject,

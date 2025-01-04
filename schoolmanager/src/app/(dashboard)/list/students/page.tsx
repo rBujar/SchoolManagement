@@ -1,16 +1,26 @@
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
-import { role } from "@/lib/utils";
+import { auth } from "@clerk/nextjs/server";
 import { Class, Prisma, Student } from "@prisma/client";
 import { Zen_Dots } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
+
+
 type StudentList = Student & { class: Class };
+
+const StudentListPage = async ({
+    searchParams,
+    }: {
+    searchParams: { [key: string]: string | undefined };
+    }) => {
+    const { sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
 
 const columns = [
     {
@@ -77,18 +87,14 @@ const renderRow = (item: StudentList) => (
                     // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple ">
                     //     <Image src="/delete.png" alt="" width={16} height={16} />
                     // </button>
-                    <FormModal table="student" type="delete" id={item.id} />
+                    <FormContainer table="student" type="delete" id={item.id} />
                 )}
             </div>
         </td>
     </tr>
 );
 
-const StudentListPage = async ({
-    searchParams,
-}: {
-    searchParams: { [key: string]: string | undefined };
-}) => {
+
     const resolvedParams = await Promise.resolve(searchParams);
 
     const { page, ...queryParams } = resolvedParams;
@@ -152,7 +158,7 @@ const StudentListPage = async ({
                             //     <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             //     <Image src="/plus.png" alt="" width={14} height={14} />
                             // </button>
-                            <FormModal table="student" type="create" />
+                            <FormContainer table="student" type="create" />
                         )}
                     </div>
                 </div>
@@ -168,5 +174,7 @@ const StudentListPage = async ({
         </div>
     );
 };
+
+
 
 export default StudentListPage;
