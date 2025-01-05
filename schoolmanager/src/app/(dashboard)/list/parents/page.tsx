@@ -2,15 +2,25 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
+import { auth } from "@clerk/nextjs/server";
 import { Parent, Prisma, Student } from "@prisma/client";
 import { Zen_Dots } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
 type ParentList = Parent & {students: Student[]}
+
+const ParentListPage = async ({
+    searchParams,
+}: {
+    searchParams: { [key: string]: string | undefined };
+}) => {
+
+    const { sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
 
 const columns = [
     {
@@ -65,11 +75,7 @@ const renderRow = (item: ParentList) => (
         </td>
     </tr>
 );
-const ParentListPage = async ({
-    searchParams,
-}: {
-    searchParams: { [key: string]: string | undefined };
-}) => {
+
     const resolvedParams = await Promise.resolve(searchParams);
 
     const { page, ...queryParams } = resolvedParams;

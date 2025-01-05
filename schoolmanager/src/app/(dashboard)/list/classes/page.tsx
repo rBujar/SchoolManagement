@@ -4,13 +4,23 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
-import { role } from "@/lib/utils";
+import { auth } from "@clerk/nextjs/server";
 import { Class, Prisma, Teacher } from "@prisma/client";
 import { Zen_Dots } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
 type ClassList = Class & { supervisor: Teacher };
+
+const ClassListPage = async ({
+    searchParams,
+}: {
+    searchParams: { [key: string]: string | undefined };
+}) => {
+
+    const { sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
 
 const columns = [
     {
@@ -65,11 +75,8 @@ const renderRow = (item: ClassList) => (
         </td>
     </tr>
 );
-const ClassListPage = async ({
-    searchParams,
-}: {
-    searchParams: { [key: string]: string | undefined };
-}) => {
+
+    
     const resolvedParams = await Promise.resolve(searchParams);
 
     const { page, ...queryParams } = resolvedParams;
