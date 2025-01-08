@@ -1,4 +1,3 @@
-"use client";
 
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalendar";
@@ -21,7 +20,7 @@ const ParentPage = async () => {
       {/* LEFT */}
       <div className="">
         {students.map((student) => (
-          <div className="w-full xl:2/3" key={student.id}>
+          <div className="w-full xl:w-2/3" key={student.id}>
             <div className="h-full bg-white p4 rounded-md">
               <h1 className="text-xl font-semibold">
                 Schedule ({student.name + " " + student.surname})
@@ -32,7 +31,7 @@ const ParentPage = async () => {
         ))}
       </div>
       {/* RIGHT */}
-      <div className="w-full lg:w-1/3 flex flex-col gap-8">
+      <div className="w-full xl:w-1/3 flex flex-col gap-8">
         <Announcements />
       </div>
     </div>

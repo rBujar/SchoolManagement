@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteClass, deleteExam, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteAssignment, deleteClass, deleteExam, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ import { FormContainerProps } from "./FormContainer";
         parent: deleteSubject,
         lesson: deleteSubject,
         exam: deleteExam,
-        assignment: deleteSubject,
+        assignment: deleteAssignment,
         result: deleteSubject,
         attendance: deleteSubject,
         event: deleteSubject,
@@ -47,6 +47,10 @@ const ClassForm = dynamic(() => import("./forms/ClassForm"), {
 const ExamForm = dynamic(() => import("./forms/ExamForm"), {
     loading: () => <h1>Loading...</h1>,
 });
+const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"), {
+    loading: () => <h1>Loading...</h1>,
+});
+
 
 const forms: {
     [key: string]: (
@@ -71,6 +75,10 @@ const forms: {
     exam: (setOpen, type, data, relatedData) => (
         <ExamForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
     ),
+    assignment: (setOpen, type, data, relatedData) => (
+        <AssignmentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
+    ),
+
 };
 
 const FormModal = ({
@@ -108,7 +116,7 @@ const FormModal = ({
 
         return type === "delete" && id ? (
             <form action={formAction} className="p-4 flex flex-col gap-4">
-                <input type="text | number" name="id" value={id} hidden />
+                <input type="text | number" name="id" value={id} onChange={() => {}} hidden/>
                 <span className="text-center font-medium">
                     All date will be lost, Are you sure you want to delete this {table}?{" "}
                 </span>
