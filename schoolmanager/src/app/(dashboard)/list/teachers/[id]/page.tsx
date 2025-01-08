@@ -163,7 +163,7 @@ const SingleTeacherPage = async ({
                     <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray-500">
                         <Link
                             className="p-3 rounded-md bg-lamaSkyLight"
-                            href={`/list/students?supervisorId=${"teacher2"}`}
+                            href={`/list/classes?supervisorId=${"teacher2"}`}
                         >
                             Teacher&apos;s Classes
                         </Link>

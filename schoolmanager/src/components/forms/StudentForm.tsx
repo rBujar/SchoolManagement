@@ -7,6 +7,7 @@ import Image from "next/image";
 import {
     Dispatch,
     SetStateAction,
+    startTransition,
     useActionState,
     useEffect,
     useState,
@@ -45,8 +46,14 @@ const StudentForm = ({
 
     const onSubmit = handleSubmit((data) => {
         console.log(data);
-        formAction({ ...data, img: img?.secure_url });
+        startTransition(() => {
+            formAction({ ...data, img: img?.secure_url });
+        });
     });
+
+    
+
+  
 
     const router = useRouter();
 

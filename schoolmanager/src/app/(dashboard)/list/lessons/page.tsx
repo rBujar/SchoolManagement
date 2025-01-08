@@ -36,7 +36,7 @@ const columns = [
         className: "hidden md:table-cell",
     },
 
-  ...(role === "admim" ? [{
+  ...(role === "admin" ? [{
         header: "Actions",
         accessor: "actions",
     }] : [])

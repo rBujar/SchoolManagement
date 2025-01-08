@@ -16,7 +16,7 @@ const EventCalendar = () => {
 
     useEffect(() => {
         if (value instanceof Date) {
-            router.push(`?date=${value.toLocaleDateString("en-US")}`);
+            router.push(`?date=${value.toLocaleDateString("en-GB")}`);
         }
     }, [value, router]);
 

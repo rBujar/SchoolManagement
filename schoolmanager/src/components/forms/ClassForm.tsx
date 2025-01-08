@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import InputField from "../InputField";
 import { classSchema, ClassSchema, subjectSchema, SubjectSchema } from "@/lib/formValidationSchemas";
 import { createClass, createSubject, updateClass, updateSubject } from "@/lib/actions";
-import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
+import { Dispatch, SetStateAction, startTransition, useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -35,8 +35,11 @@ const ClassForm = ({
 
     const onSubmit = handleSubmit((data) => {
         console.log(data);
-        formAction(data);
+        startTransition(() => {
+            formAction(data);
+        });
     });
+
 
     const router = useRouter();
 
