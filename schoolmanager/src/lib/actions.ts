@@ -5,7 +5,7 @@ import {
     AssignmentSchema,
     ClassSchema,
     ExamSchema,
-    
+    ParentSchema,
     StudentSchema,
     SubjectSchema,
     TeacherSchema,
@@ -594,6 +594,131 @@ export const deleteAssignment = async (
         return { success: true, error: false };
     } catch (err) {
         console.log(err);
+        return { success: false, error: true };
+    }
+};
+
+// Parent
+export const createParent = async (
+    currentState: CurrentState,
+    data: ParentSchema
+) => {
+    try {
+        const clerk = await clerkClient();
+
+        const user = await clerk.users.createUser({
+            username: data.username,
+            password: data.password,
+            firstName: data.name,
+            lastName: data.surname,
+            publicMetadata: { role: "parent" },
+        });
+
+        await prisma.parent.create({
+            data: {
+                id: user.id,
+                username: data.username,
+                name: data.name,
+                surname: data.surname,
+                email: data.email || null,
+                phone: data.phone || null,
+                address: data.address,
+                students: data.students?.length
+                    ? {
+                        connect: data.students.map((studentId: string) => ({
+                            id: studentId,
+                        })),
+                    }
+                    : undefined, // If no students are provided, this will not be included
+            },
+        });
+
+        // revalidatePath("/list/parent");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+export const updateParent = async (
+    currentState: CurrentState,
+    data: ParentSchema
+) => {
+    if (!data.id) {
+        return { success: false, error: true };
+    }
+
+    try {
+        const client = await clerkClient();
+
+        await client.users.updateUser(data.id, {
+            username: data.username,
+            ...(data.password !== "" && { password: data.password }),
+            firstName: data.name,
+            lastName: data.surname,
+        });
+
+        await prisma.parent.update({
+            where: {
+                id: data.id,
+            },
+            data: {
+                ...(data.password !== "" && { password: data.password }),
+                username: data.username,
+                name: data.name,
+                surname: data.surname,
+                email: data.email || null,
+                phone: data.phone || null,
+                address: data.address,
+                students: data.students?.length
+                    ? {
+                        set: data.students.map((studentId: string) => ({
+                            id: studentId,
+                        })),
+                    }
+                    : undefined, // If no students are provided, this will not be included
+            },
+        });
+        // revalidatePath("/list/parents");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+
+export const deleteParent = async (
+    currentState: CurrentState,
+    data: FormData
+) => {
+    const id = data.get("id") as string;
+    console.log("Deleting parent with ID:", id);
+
+    try {
+        // Check if the user exists in Clerk
+        const client = await clerkClient();
+        const user = await client.users.getUser(id); // Verify the user exists
+        console.log("User found in Clerk:", user);
+
+        // Proceed to delete the user in Clerk
+        await client.users.deleteUser(id);
+
+        // Check if the parent exists in Prisma
+        const parent = await prisma.parent.findUnique({
+            where: { id },
+        });
+        console.log("Parent found in Prisma:", parent);
+
+        // Proceed to delete the parent from Prisma
+        await prisma.parent.delete({
+            where: { id },
+        });
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log("Error deleting parent:", err);
         return { success: false, error: true };
     }
 };

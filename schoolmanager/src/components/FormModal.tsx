@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteAssignment, deleteClass, deleteExam, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteAssignment, deleteClass, deleteExam, deleteParent, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ import { FormContainerProps } from "./FormContainer";
         class: deleteClass,
         teacher: deleteTeacher,
         student: deleteStudent,
-        parent: deleteSubject,
+        parent: deleteParent,
         lesson: deleteSubject,
         exam: deleteExam,
         assignment: deleteAssignment,
@@ -50,6 +50,9 @@ const ExamForm = dynamic(() => import("./forms/ExamForm"), {
 const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"), {
     loading: () => <h1>Loading...</h1>,
 });
+const ParentForm = dynamic(() => import("./forms/ParentForm"), {
+    loading: () => <h1>Loading...</h1>,
+});
 
 
 const forms: {
@@ -71,6 +74,9 @@ const forms: {
     ),
     student: (setOpen, type, data, relatedData) => (
         <StudentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
+    ),
+    parent: (setOpen, type, data, relatedData) => (
+        <ParentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
     ),
     exam: (setOpen, type, data, relatedData) => (
         <ExamForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
