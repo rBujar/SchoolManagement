@@ -163,6 +163,7 @@ async function main() {
             data: {
                 score: 90,
                 studentId: `student${i}`,
+                teacherId: `teacher${i}`,
                 ...(i <= 5 ? { examId: i } : { assignmentId: i - 5 }),
             },
         });

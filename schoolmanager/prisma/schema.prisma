@@ -50,6 +50,7 @@ model Teacher {
   subjects  Subject[]
   lessons   Lesson[]
   classes   Class[]
+  results     Result[]
   birthday  DateTime
 }
 
@@ -59,7 +60,7 @@ model Parent {
   name      String
   surname   String
   email     String?   @unique
-  phone     String    @unique
+  phone     String?    @unique
   address   String
   createdAt DateTime  @default(now())
   students  Student[]
@@ -141,6 +142,8 @@ model Result {
   assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   studentId    String
   student      Student     @relation(fields: [studentId], references: [id])
+  teacherId    String
+  teacher      Teacher     @relation(fields: [teacherId], references: [id])
 }
 
 model Attendance {
