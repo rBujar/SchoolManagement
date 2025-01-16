@@ -12,7 +12,7 @@
 
 
 .react-calendar__tile--active{
-  background-color: #C3EBFA !important;
+  background-color: #c3ebfa !important;
   color: black !important;
 }
 .react-calendar__navigation__label__labelText{
@@ -36,13 +36,13 @@ background-color: #f1f0ff !important;
 margin-left: 2px !important;
 }
 
-.rbc-active{
-  box-shadow: none !important;
+.rbc-toolbar button.rbc-active {
   background-color: #dbdafe !important;
+  box-shadow: none !important;
 }
 
 .rbc-time-view{
-  border: #eee !important;
+  border-color: #eee !important;
 }
 
 .rbc-time-header{
