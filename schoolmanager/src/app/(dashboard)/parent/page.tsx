@@ -2,6 +2,7 @@
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalendar";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
+import Notes from "@/components/Notes";
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
@@ -33,6 +34,9 @@ const ParentPage = async () => {
       {/* RIGHT */}
       <div className="w-full xl:w-1/3 flex flex-col gap-8">
         <Announcements />
+        <div className=" flex justify-center items-center overflow-auto bg-white shadow-md rounded-lg p-4 h-[400px]"  >
+        <Notes />
+        </div>
       </div>
     </div>
   );
