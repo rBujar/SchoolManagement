@@ -5,6 +5,7 @@ import {
     AssignmentSchema,
     ClassSchema,
     ExamSchema,
+    LessonSchema,
     ParentSchema,
     StudentSchema,
     SubjectSchema,
@@ -719,6 +720,136 @@ export const deleteParent = async (
         return { success: true, error: false };
     } catch (err) {
         console.log("Error deleting parent:", err);
+        return { success: false, error: true };
+    }
+};
+
+
+//EXAM
+
+export const createLesson = async (
+    currentState: CurrentState,
+    data: LessonSchema
+) => {
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        if (role === "teacher") {
+            const subject = await prisma.subject.findFirst({
+                where: {
+                    id: data.subjectId,
+                    teachers: {
+                        some: {
+                            id: userId!,
+                        },
+                    },
+                },
+            });
+
+            if (!subject) {
+                return {
+                    success: false,
+                    error: true,
+                    message: "Unauthorized access to this subject.",
+                };
+            }
+        }
+
+        await prisma.lesson.create({
+            data: {
+                name: data.name,
+                startTime: data.startTime,
+                endTime: data.endTime,
+                subjectId: data.subjectId,
+                classId: data.classId,
+                teacherId: data.teacherId,
+                day:data.day
+            },
+        });
+
+        // revalidatePath("/list/lessons");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+export const updateLesson = async (
+    currentState: CurrentState,
+    data: LessonSchema
+) => {
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        if (role === "teacher") {
+            const subject = await prisma.subject.findFirst({
+                where: {
+                    id: data.subjectId,
+                    teachers: {
+                        some: {
+                            id: userId!,
+                        },
+                    },
+                },
+            });
+
+            if (!subject) {
+                return {
+                    success: false,
+                    error: true,
+                    message: "Unauthorized access to this subject.",
+                };
+            }
+        }
+
+        await prisma.lesson.update({
+            where: {
+                id: data.id,
+            },
+            data: {
+                name: data.name,
+                startTime: data.startTime,
+                endTime: data.endTime,
+                subjectId: data.subjectId,
+                classId: data.classId,
+                teacherId: data.teacherId,
+                day:data.day
+            },
+        });
+
+        // revalidatePath("/list/lessons");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+export const deleteLesson = async (
+    currentState: CurrentState,
+    data: FormData
+) => {
+    const id = data.get("id") as string;
+
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        await prisma.lesson.delete({
+            where: {
+                id: parseInt(id),
+                ...(role === "teacher" ? { teacherId: userId! } : {}),
+            },
+        });
+
+        // revalidatePath("/list/lesson");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
         return { success: false, error: true };
     }
 };
