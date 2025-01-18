@@ -1,5 +1,6 @@
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
+import SortContainer from "@/components/SortContainer";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
@@ -17,12 +18,9 @@ const ClassListPage = async ({
 }: {
     searchParams: { [key: string]: string | undefined };
 }) => {
-
     const { userId, sessionClaims } = await auth();
     const role = (sessionClaims?.metadata as { role?: string })?.role;
     const currentUserId = userId;
-
-
 
     const columns = [
         {
@@ -77,16 +75,10 @@ const ClassListPage = async ({
             </td>
         </tr>
     );
-  
-
-
-
-
-   
 
     const resolvedParams = await Promise.resolve(searchParams);
 
-    const { page, ...queryParams } = resolvedParams;
+    const { page, sortOrder = "asc", ...queryParams } = resolvedParams;
 
     const p = page ? parseInt(page) : 1;
 
@@ -111,8 +103,8 @@ const ClassListPage = async ({
         }
     }
 
-     //ROLE PARAMS
-     switch (role) {
+    //ROLE PARAMS
+    switch (role) {
         case "admin":
             break;
         case "teacher":
@@ -120,19 +112,19 @@ const ClassListPage = async ({
             break;
         case "student":
             query.students = {
-                    some: { id: currentUserId! },
-                }
+                some: { id: currentUserId! },
+            };
             break;
         case "parent":
             query.students = {
-                    some: { parentId: currentUserId! },
-                }
+                some: { parentId: currentUserId! },
+            };
             break;
         default:
             break;
     }
 
-
+    const defaultSortOrder = sortOrder === "asc" ? "asc" : "desc";
 
     const [data, count] = await prisma.$transaction([
         prisma.class.findMany({
@@ -140,6 +132,7 @@ const ClassListPage = async ({
             include: {
                 supervisor: true,
             },
+            orderBy: { createdAt: defaultSortOrder},
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1),
         }),
@@ -157,9 +150,10 @@ const ClassListPage = async ({
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/filter.png" alt="" width={14} height={14} />
                         </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
-                        </button>
+                        </button> */}
+                        <SortContainer initialSortOrder={defaultSortOrder}/>
                         {role === "admin" && <FormContainer table="class" type="create" />}
                     </div>
                 </div>

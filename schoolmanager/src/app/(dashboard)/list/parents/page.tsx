@@ -1,5 +1,6 @@
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
+import SortContainer from "@/components/SortContainer";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
@@ -41,7 +42,7 @@ const columns = [
     {
         header: "Address",
         accessor: "address",
-        className: "hidden md:table-cell",
+        className: "hidden lg:table-cell",
     },
    ...(role === "admin" || role === "teacher" ? [ {
         header: "Actions",
@@ -61,8 +62,8 @@ const renderRow = (item: ParentList) => (
             </div>
         </td>
         <td className="hidden md:table-cell">{item.students.map(student => student.name).join(", ")}</td>
-        <td className="hidden md:table-cell">{item.phone}</td>
-        <td className="hidden md:table-cell">{item.address}</td>
+        <td className="hidden lg:table-cell">{item.phone}</td>
+        <td className="hidden lg:table-cell">{item.address}</td>
         <td className="">
             <div className="flex items-center gap-2">
                 {role === "admin" && (
@@ -78,7 +79,7 @@ const renderRow = (item: ParentList) => (
 
     const resolvedParams = await Promise.resolve(searchParams);
 
-    const { page, ...queryParams } = resolvedParams;
+    const { page, sortOrder = "asc",...queryParams } = resolvedParams;
 
     const p = page ? parseInt(page) : 1;
 
@@ -101,12 +102,15 @@ const renderRow = (item: ParentList) => (
         }
     }
 
+    const defaultSortOrder = sortOrder === "asc" ? "asc" : "desc";
+
     const [data, count] = await prisma.$transaction([
         prisma.parent.findMany({
             where: query,
             include: {
                 students: true,
             },
+            orderBy: {createdAt: defaultSortOrder},
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1),
         }),
@@ -123,9 +127,10 @@ const renderRow = (item: ParentList) => (
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/filter.png" alt="" width={14} height={14} />
                         </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
-                        </button>
+                        </button> */}
+                        <SortContainer initialSortOrder={defaultSortOrder}/>
                         {role === "admin" && <FormContainer table="parent" type="create" />}
                     </div>
                 </div>

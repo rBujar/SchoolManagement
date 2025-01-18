@@ -1,5 +1,6 @@
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
+import SortContainer from "@/components/SortContainer";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
@@ -61,7 +62,7 @@ const renderRow = (item: SubjectList) => (
 
     const resolvedParams = await Promise.resolve(searchParams);
 
-    const { page, ...queryParams } = resolvedParams;
+    const { page, sortOrder = "asc", ...queryParams } = resolvedParams;
 
     const p = page ? parseInt(page) : 1;
 
@@ -83,12 +84,15 @@ const renderRow = (item: SubjectList) => (
         }
     }
 
+    const defaultSortOrder = sortOrder === "asc" ? "asc" : "desc";
+
     const [data, count] = await prisma.$transaction([
         prisma.subject.findMany({
             where: query,
             include: {
                 teachers: true,
             },
+            orderBy: { createdAt: defaultSortOrder},
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1),
         }),
@@ -106,9 +110,10 @@ const renderRow = (item: SubjectList) => (
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/filter.png" alt="" width={14} height={14} />
                         </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
-                        </button>
+                        </button> */}
+                        <SortContainer initialSortOrder={defaultSortOrder}/>
                         {role === "admin" && <FormContainer table="subject" type="create" />}
                     </div>
                 </div>
