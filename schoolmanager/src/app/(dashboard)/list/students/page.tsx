@@ -112,12 +112,8 @@ const renderRow = (item: StudentList) => (
                 switch (key) {
                     case "teacherId":
                         query.class = {
-                            lessons: {
-                                some: {
-                                    teacherId: value,
-                                },
-                            },
-                        };
+                                    supervisorId: value,
+                            }
                         break;
                     case "search":
                         query.name = { contains: value, mode: "insensitive" };

@@ -47,6 +47,12 @@ const TeacherForm = ({
     const router = useRouter();
 
     useEffect(() => {
+        if (data?.img) {
+            setImg({ secure_url: data.img }); // Pre-fill img for edit
+        }
+    }, [data]);
+
+    useEffect(() => {
         if (state.success) {
             toast(`Teacher has been ${type === "create" ? "created" : "updated"}!`);
             setOpen(false);
@@ -185,6 +191,14 @@ const TeacherForm = ({
                         </p>
                     )}
                 </div>
+
+                {/* <Image
+                        src={img?.secure_url || "/noAvatar.png"}
+                        alt="Profile Picture"
+                        width={144}
+                        height={144}
+                        className="w-36 h-36 rounded-full object-cover"
+                    /> */}
 
                 <CldUploadWidget uploadPreset="school" onSuccess={(result,{widget})=>{
                     setImg(result.info)
