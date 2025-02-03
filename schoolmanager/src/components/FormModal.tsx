@@ -59,6 +59,9 @@ const LessonForm = dynamic(() => import("./forms/LessonForm"), {
 const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"), {
     loading: () => <h1>Loading...</h1>,
 });
+const EventForm = dynamic(() => import("./forms/EventForm"), {
+    loading: () => <h1>Loading...</h1>,
+});
 
 
 const forms: {
@@ -95,6 +98,9 @@ const forms: {
     ),
     announcement: (setOpen, type, data, relatedData) => (
         <AnnouncementForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
+    ),
+    event: (setOpen, type, data, relatedData) => (
+        <EventForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
     ),
 
 };

@@ -1,3 +1,4 @@
+import FormContainer from "@/components/FormContainer";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -32,11 +33,6 @@ const columns = [
         accessor: "class",
     },
     {
-        header: "Date",
-        accessor: "date",
-        className: "hidden md:table-cell",
-    },
-    {
         header: "Start Time",
         accessor: "startTime",
         className: "hidden md:table-cell",
@@ -65,9 +61,6 @@ const renderRow = (item: EventList) => (
         <td className="flex items-center gap-4 p-4">{item.title}</td>
         <td>{item.class?.name || "-"}</td>
         <td className="hidden md:table-cell">
-            {new Intl.DateTimeFormat("en-Us").format(item.startTime)}
-        </td>
-        <td className="hidden md:table-cell">
             {item.startTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -85,8 +78,8 @@ const renderRow = (item: EventList) => (
             <div className="flex items-center gap-2">
                 {role === "admin" && (
                     <>
-                        <FormModal table="event" type="update" data={item} />
-                        <FormModal table="event" type="delete" id={item.id} />
+                        <FormContainer table="event" type="update" data={item} />
+                        <FormContainer table="event" type="delete" id={item.id} />
                     </>
                 )}
             </div>
@@ -105,6 +98,9 @@ const renderRow = (item: EventList) => (
 
     const query: Prisma.EventWhereInput = {};
 
+    query.class = {}
+
+
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
@@ -121,15 +117,31 @@ const renderRow = (item: EventList) => (
 
     // ROLE CONDITIONS
 
-    const roleConditions = {
-        teacher: { lessons: { some: { teacherId: currentUserId! } } },
-        student: { students: { some: { id: currentUserId! } } },
-        parent: { students: { some: { parentId: currentUserId! } } },
-    };
+      // ROLE CONDITIONS
 
-    query.OR = [{ classId: null},{
-        class:roleConditions[role as keyof typeof roleConditions] || {}
-    }]
+      switch (role) {
+        case "admin":
+            break;
+        case "teacher":
+            query.class.supervisorId = currentUserId!;
+            break;
+        case "student":
+            query.class = {
+                students: {
+                    some: { id: currentUserId! },
+                },
+            };
+            break;
+        case "parent":
+            query.class = {
+                students: {
+                    some: { parentId: currentUserId! },
+                },
+            };
+            break;
+        default:
+            break;
+    }
 
     const [data, count] = await prisma.$transaction([
         prisma.event.findMany({
@@ -157,7 +169,7 @@ const renderRow = (item: EventList) => (
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
                         </button>
-                        {role === "admin" && <FormModal table="event" type="create" />}
+                        {role === "admin" && <FormContainer table="event" type="create" />}
                     </div>
                 </div>
             </div>
