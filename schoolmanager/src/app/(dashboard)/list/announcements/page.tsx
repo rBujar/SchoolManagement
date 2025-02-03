@@ -1,4 +1,4 @@
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -61,8 +61,8 @@ const renderRow = (item: AnnouncementList) => (
                 
                 {role === "admin" && (
                     <>
-                    <FormModal table="announcement" type="update" data={item}/>
-                    <FormModal table="announcement" type="delete" id={item.id}/>
+                    <FormContainer table="announcement" type="update" data={item}/>
+                    <FormContainer table="announcement" type="delete" id={item.id}/>
                     </>
                 )}
             </div>
@@ -81,6 +81,8 @@ const renderRow = (item: AnnouncementList) => (
 
     const query: Prisma.AnnouncementWhereInput = {};
 
+    query.class = {}
+
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
@@ -95,17 +97,34 @@ const renderRow = (item: AnnouncementList) => (
         }
     }
 
+
       // ROLE CONDITIONS
 
-        const roleConditions = {
-        teacher: { lessons: { some: { teacherId: currentUserId! } } },
-        student: { students: { some: { id: currentUserId! } } },
-        parent: { students: { some: { parentId: currentUserId! } } },
-    };
+    switch (role) {
+        case "admin":
+            break;
+        case "teacher":
+            query.class.supervisorId = currentUserId!;
+            break;
+        case "student":
+            query.class = {
+                students: {
+                    some: { id: currentUserId! },
+                },
+            };
+            break;
+        case "parent":
+            query.class = {
+                students: {
+                    some: { parentId: currentUserId! },
+                },
+            };
+            break;
+        default:
+            break;
+    }
 
-    query.OR = [{ classId: null},{
-        class:roleConditions[role as keyof typeof roleConditions] || {}
-    }]
+     
 
 
     const [data, count] = await prisma.$transaction([
@@ -119,6 +138,8 @@ const renderRow = (item: AnnouncementList) => (
         }),
         prisma.announcement.count({ where: query }),
     ]);
+
+
 
 
     return (
@@ -136,7 +157,7 @@ const renderRow = (item: AnnouncementList) => (
                             <Image src="/sort.png" alt="" width={14} height={14} />
                         </button>
                         {role === "admin" && (
-                            <FormModal table="announcement" type="create" />
+                            <FormContainer table="announcement" type="create" />
                         )}
                     </div>
                 </div>

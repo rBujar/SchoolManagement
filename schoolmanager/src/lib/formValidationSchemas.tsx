@@ -112,9 +112,21 @@ export const lessonSchema = z.object({
     endTime:z.coerce.date({message:"End time is required!"}),
     subjectId:z.coerce.number({message:"Subject id is required!"}),
     classId:z.coerce.number({message:"Class Id is required!"}),
-    teacherId:z.string().min(1, {message:"Parent Id is required!"}),
+    teacherId:z.string().min(1, {message:"Teacher Id is required!"}),
     day: z.enum(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"], { message: "Day is required!" }),
 });
 
 export type LessonSchema = z.infer<typeof lessonSchema>;
+
+
+export const announcementSchema = z.object({
+    id: z.coerce.number().optional(),
+    title: z.string().min(1, { message: "Title name is required!" }),
+    description: z.string().min(1, { message: "Description name is required!" }),
+    date:z.coerce.date({message:"Date is required!"}),
+    classId:z.coerce.number({message:"Lesson time is required!"}),
+});
+
+export type AnnouncementSchema = z.infer<typeof announcementSchema>;
+
 

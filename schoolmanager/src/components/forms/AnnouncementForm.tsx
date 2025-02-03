@@ -3,13 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "../InputField";
-import { classSchema, ClassSchema, subjectSchema, SubjectSchema } from "@/lib/formValidationSchemas";
-import { createClass, createSubject, updateClass, updateSubject } from "@/lib/actions";
+import { announcementSchema, AnnouncementSchema } from "@/lib/formValidationSchemas";
+import { createAnnouncement, updateAnnouncement } from "@/lib/actions";
 import { Dispatch, SetStateAction, startTransition, useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-const ClassForm = ({
+const AnnouncementForm = ({
     type,
     data,
     setOpen,
@@ -24,12 +24,12 @@ const ClassForm = ({
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<ClassSchema>({
-        resolver: zodResolver(classSchema),
+    } = useForm<AnnouncementSchema>({
+        resolver: zodResolver(announcementSchema),
     });
 
     const [state, formAction, pending] = useActionState(
-        type === "create" ? createClass : updateClass,
+        type === "create" ? createAnnouncement : updateAnnouncement,
         { success: false, error: false }
     );
 
@@ -45,36 +45,44 @@ const ClassForm = ({
 
     useEffect(() => {
         if (state.success) {
-            toast(`Class has been ${type === "create" ? "created" : "updated"}!`);
+            toast(`Announcement has been ${type === "create" ? "created" : "updated"}!`);
             setOpen(false);
             router.refresh();
         }
     }, [state]);
 
-    const { teachers, grades } = relatedData;
+    const { classes } = relatedData;
     // const { teachers = [] } = relatedData || {};
 
 
     return (
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-xl font-semibold">
-                {type === "create" ? "Create a new class" : "Update the Class"}
+                {type === "create" ? "Create a new Announcement" : "Update the Announcement"}
             </h1>
 
             <div className="flex justify-between flex-wrap gap-4">
                 <InputField
-                    label="Class name"
-                    name="name"
-                    defaultValue={data?.name}
+                    label="Announcement Title"
+                    name="title"
+                    defaultValue={data?.title}
                     register={register}
-                    error={errors?.name}
+                    error={errors?.title}
                 />
                 <InputField
-                    label="Capacity"
-                    name="capacity"
-                    defaultValue={data?.capacity}
+                    label="Description"
+                    name="description"
+                    defaultValue={data?.description}
                     register={register}
-                    error={errors?.capacity}
+                    error={errors?.description}
+                />
+                <InputField
+                    label="Date"
+                    name="date"
+                    defaultValue={data?.date}
+                    register={register}
+                    error={errors?.date}
+                    type="datetime-local"
                 />
                 {data && (
                     <InputField
@@ -88,48 +96,27 @@ const ClassForm = ({
                 )}
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Supervisor</label>
+                    <label className="text-xs text-gray-500">Classes</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-                        {...register("supervisorId")}
-                        defaultValue={data?.teachers}
+                        {...register("classId")}
+                        defaultValue={data?.classId}
                     >
-                        {teachers.map(
-                            (teacher: { id: string; name: string; surname: string }) => (
-                                <option value={teacher.id} key={teacher.id} defaultValue={data && teacher.id === data.supervisorId}>
-                                    {teacher.name + " " + teacher.surname}
+                        {classes.map(
+                            (classItem: { id: string; name: string; }) => (
+                                <option value={classItem.id} key={classItem.id} defaultValue={classItem.name} >
+                                    {classItem.name}
                                 </option>
                             )
                         )}
                     </select>
-                    {errors.supervisorId?.message && (
+                    {errors.classId?.message && (
                         <p className="text-xs text-red-400">
-                            {errors.supervisorId.message.toString()}
+                            {errors.classId.message.toString()}
                         </p>
                     )}
                 </div>
 
-                <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Grade</label>
-                    <select
-                        className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-                        {...register("gradeId")}
-                        defaultValue={data?.gradeId}
-                    >
-                        {grades.map(
-                            (grade: { id: number; level:number }) => (
-                                <option value={grade.id} key={grade.id} defaultValue={data && grade.id === data.gradeId}>
-                                    {grade.level}
-                                </option>
-                            )
-                        )}
-                    </select>
-                    {errors.gradeId?.message && (
-                        <p className="text-xs text-red-400">
-                            {errors.gradeId.message.toString()}
-                        </p>
-                    )}
-                </div>
             </div>
 
             {state.error && (
@@ -143,4 +130,4 @@ const ClassForm = ({
     );
 };
 
-export default ClassForm;
+export default AnnouncementForm;

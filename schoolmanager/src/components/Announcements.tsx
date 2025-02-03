@@ -5,6 +5,9 @@ const Announcements = async () => {
     const { userId, sessionClaims } = await auth();
     const role = (sessionClaims?.metadata as { role?: string })?.role;
 
+    const thisWeek = new Date();
+    thisWeek.setDate(thisWeek.getDate() - 14)
+
     const roleConditions = {
         teacher: { lessons: { some: { teacherId: userId! } } },
         student: { students: { some: { id: userId! } } },
@@ -15,6 +18,9 @@ const Announcements = async () => {
         take: 3,
         orderBy: { date: "desc" },
         where: {
+            date:{
+                gte: thisWeek,
+            },
             ...(role !== "admin" && {
                 OR: [
                     { classId: null },
