@@ -1,5 +1,6 @@
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
+import SortContainer from "@/components/SortContainer";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
@@ -73,7 +74,7 @@ const renderRow = (item: AnnouncementList) => (
 
     const resolvedParams = await Promise.resolve(searchParams);
 
-    const { page, ...queryParams } = resolvedParams;
+    const { page, sortOrder="asc", ...queryParams } = resolvedParams;
 
     const p = page ? parseInt(page) : 1;
 
@@ -96,6 +97,8 @@ const renderRow = (item: AnnouncementList) => (
             }
         }
     }
+
+    const defaultSortOrder = sortOrder === "asc" ? "asc" : "desc";
 
 
       // ROLE CONDITIONS
@@ -153,9 +156,10 @@ const renderRow = (item: AnnouncementList) => (
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/filter.png" alt="" width={14} height={14} />
                         </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
-                        </button>
+                        </button> */}
+                        <SortContainer initialSortOrder={defaultSortOrder}/>
                         {role === "admin" && (
                             <FormContainer table="announcement" type="create" />
                         )}

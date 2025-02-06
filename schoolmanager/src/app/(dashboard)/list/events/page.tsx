@@ -90,7 +90,7 @@ const renderRow = (item: EventList) => (
 
     const resolvedParams = await Promise.resolve(searchParams);
 
-    const { page, ...queryParams } = resolvedParams;
+    const { page, sortOrder ="asc", ...queryParams } = resolvedParams;
 
     const p = page ? parseInt(page) : 1;
 
@@ -115,11 +115,13 @@ const renderRow = (item: EventList) => (
         }
     }
 
+    const defaultSortOrder = sortOrder === "asc" ? "asc" : "desc";
+
     // ROLE CONDITIONS
 
       // ROLE CONDITIONS
 
-      switch (role) {
+        switch (role) {
         case "admin":
             break;
         case "teacher":
