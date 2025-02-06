@@ -4,11 +4,13 @@ import { revalidatePath } from "next/cache";
 import {
     AnnouncementSchema,
     AssignmentSchema,
+    AttendanceSchema,
     ClassSchema,
     EventSchema,
     ExamSchema,
     LessonSchema,
     ParentSchema,
+    ResultSchema,
     StudentSchema,
     SubjectSchema,
     TeacherSchema,
@@ -1032,6 +1034,258 @@ export const deleteEvent = async (
 
     try {
         await prisma.event.delete({
+            where: {
+                id: parseInt(id),
+            },
+        });
+
+        // revalidatePath("/list/exams");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+
+
+//Attendance
+
+export const createAttendance = async (
+    currentState: CurrentState,
+    data: AttendanceSchema
+) => {
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        if (role === "teacher") {
+            const teacherLesson = await prisma.lesson.findFirst({
+                where: {
+                    teacherId: userId!,
+                    id: data.lessonId,
+                },
+            }); //checks is the lesson belongs to the user(teacher)
+
+            if (!teacherLesson) {
+                return { success: false, error: true };
+            }
+        }
+
+        await prisma.attendance.create({
+            data: {
+                date: data.date,
+                present: data.present,
+                studentId: data.studentId,
+                lessonId: data.lessonId,
+            },
+        });
+
+        // revalidatePath("/list/exams");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+export const updateAttendance = async (
+    currentState: CurrentState,
+    data: AttendanceSchema
+) => {
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        if (role === "teacher") {
+            const teacherLesson = await prisma.lesson.findFirst({
+                where: {
+                    teacherId: userId!,
+                    id: data.lessonId,
+                },
+            }); //checks is the lesson belongs to the user(teacher)
+
+            if (!teacherLesson) {
+                return { success: false, error: true };
+            }
+        }
+
+        await prisma.attendance.update({
+            where: {
+                id: data.id,
+            },
+            data: {
+                date: data.date,
+                present: data.present,
+                studentId: data.studentId,
+                lessonId: data.lessonId,
+            },
+        });
+
+        // revalidatePath("/list/exams");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+export const deleteAttendance = async (
+    currentState: CurrentState,
+    data: FormData
+) => {
+    const id = data.get("id") as string;
+
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        await prisma.attendance.delete({
+            where: {
+                id: parseInt(id),
+            },
+        });
+
+        // revalidatePath("/list/exams");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+export const createResult = async (
+    currentState: CurrentState,
+    data: ResultSchema
+) => {
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        if (role === "teacher") {
+            const teacherExam = await prisma.exam.findFirst({
+                where: {
+                   lesson: {
+                    teacherId: userId!
+                   }
+                },
+                select:{
+                    lesson:true,
+                }
+            }); //checks is the lesson belongs to the user(teacher)
+
+            if (!teacherExam) {
+                return { success: false, error: true };
+            }
+        }
+        if (role === "teacher") {
+            const teacherAssignment = await prisma.assignment.findFirst({
+                where: {
+                   lesson: {
+                    teacherId: userId!
+                   }
+                },
+                select:{
+                    lesson:true,
+                }
+            }); //checks is the lesson belongs to the user(teacher)
+
+            if (!teacherAssignment) {
+                return { success: false, error: true };
+            }
+        }
+        
+
+        await prisma.result.create({
+            data: {
+                score: data.score,
+                examId: data.examId || undefined,
+                assignmentId: data.assignmentId || undefined,
+                studentId: data.studentId,
+            },
+        });
+
+        // revalidatePath("/list/exams");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+export const updateResult = async (
+    currentState: CurrentState,
+    data: ResultSchema
+) => {
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        if (role === "teacher") {
+            const teacherExam = await prisma.exam.findFirst({
+                where: {
+                   lesson: {
+                    teacherId: userId!
+                   }
+                },
+                select:{
+                    lesson:true,
+                }
+            }); //checks is the lesson belongs to the user(teacher)
+
+            if (!teacherExam) {
+                return { success: false, error: true };
+            }
+        }
+        if (role === "teacher") {
+            const teacherAssignment = await prisma.assignment.findFirst({
+                where: {
+                   lesson: {
+                    teacherId: userId!
+                   }
+                },
+                select:{
+                    lesson:true,
+                }
+            }); //checks is the lesson belongs to the user(teacher)
+
+            if (!teacherAssignment) {
+                return { success: false, error: true };
+            }
+        }
+
+
+        await prisma.result.update({
+            where: {
+                id: data.id,
+            },
+            data: {
+                score: data.score,
+                examId: data.examId,
+                assignmentId: data.assignmentId,
+                studentId: data.studentId,
+            },
+        });
+
+        // revalidatePath("/list/exams");
+
+        return { success: true, error: false };
+    } catch (err) {
+        console.log(err);
+        return { success: false, error: true };
+    }
+};
+export const deleteResult = async (
+    currentState: CurrentState,
+    data: FormData
+) => {
+    const id = data.get("id") as string;
+
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        await prisma.result.delete({
             where: {
                 id: parseInt(id),
             },

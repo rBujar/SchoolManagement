@@ -1,5 +1,7 @@
+import FormContainer from "@/components/FormContainer";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
+import SortContainer from "@/components/SortContainer";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
@@ -83,8 +85,8 @@ const renderRow = (item: ResultList) => (
             <div className="flex items-center gap-2">
                 {(role === "admin" || role === "teacher") && (
                     <>
-                        <FormModal table="result" type="update" data={item} />
-                        <FormModal table="result" type="delete" id={item.id} />
+                        <FormContainer table="result" type="update" data={item} />
+                        <FormContainer table="result" type="delete" id={item.id} />
                     </>
                 )}
             </div>
@@ -95,7 +97,7 @@ const renderRow = (item: ResultList) => (
 
     const resolvedParams = await Promise.resolve(searchParams);
 
-    const { page, ...queryParams } = resolvedParams;
+    const { page, sortOrder = "asc", ...queryParams } = resolvedParams;
 
     const p = page ? parseInt(page) : 1;
 
@@ -123,6 +125,8 @@ const renderRow = (item: ResultList) => (
         }
     }
 
+
+
     // ROLE CONDITIONS 
 
     switch (role) {
@@ -145,6 +149,8 @@ const renderRow = (item: ResultList) => (
         default:
             break;
     }
+    const defaultSortOrder = sortOrder === "asc" ? "asc" : "desc";
+
 
     const [dataRes, count] = await prisma.$transaction([
         prisma.result.findMany({
@@ -172,8 +178,9 @@ const renderRow = (item: ResultList) => (
                             }
                         }
                     }
-                }
+                },
             },
+            orderBy: {createdAt: defaultSortOrder},
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1),
         }),
@@ -202,6 +209,7 @@ const renderRow = (item: ResultList) => (
     }
     )
 
+
     return (
         <div className="bg-white p4 rounded-md flex-1 m-4 mt-0">
             {/* TOP */}
@@ -213,10 +221,11 @@ const renderRow = (item: ResultList) => (
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/filter.png" alt="" width={14} height={14} />
                         </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
-                        </button>
-                        {(role === "admin" || role === "teacher") && <FormModal table="result" type="create" />}
+                        </button> */}
+                        <SortContainer initialSortOrder={defaultSortOrder}/>
+                        {(role === "admin" || role === "teacher") && <FormContainer table="result" type="create" />}
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteAnnouncement, deleteAssignment, deleteAttendance, deleteClass, deleteExam, deleteLesson, deleteParent, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteAnnouncement, deleteAssignment, deleteAttendance, deleteClass, deleteExam, deleteLesson, deleteParent, deleteResult, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ import { FormContainerProps } from "./FormContainer";
         lesson: deleteLesson,
         exam: deleteExam,
         assignment: deleteAssignment,
-        result: deleteSubject,
+        result: deleteResult,
         attendance: deleteAttendance,
         event: deleteSubject,
         announcement: deleteAnnouncement,
@@ -63,6 +63,9 @@ const EventForm = dynamic(() => import("./forms/EventForm"), {
     loading: () => <h1>Loading...</h1>,
 });
 const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"), {
+    loading: () => <h1>Loading...</h1>,
+});
+const ResultForm = dynamic(() => import("./forms/ResultForm"), {
     loading: () => <h1>Loading...</h1>,
 });
 
@@ -107,6 +110,9 @@ const forms: {
     ),
     attendance: (setOpen, type, data, relatedData) => (
         <AttendanceForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
+    ),
+    result: (setOpen, type, data, relatedData) => (
+        <ResultForm type={type} data={data} setOpen={setOpen} relatedData={relatedData}/>
     ),
 
 };

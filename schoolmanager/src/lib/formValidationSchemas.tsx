@@ -150,6 +150,16 @@ export const attendanceSchema = z.object({
 
 export type AttendanceSchema = z.infer<typeof attendanceSchema>;
 
+export const resultSchema = z.object({
+    id: z.coerce.number().optional(),
+    score:z.coerce.number({message:"Date is required!"}),
+    examId:z.coerce.number({message:"Exam Id is required!"}).optional(),
+    assignmentId:z.coerce.number({message:"Assignment Id is required!"}).optional(),
+    studentId:z.string({message:"Student Id is required!"}),
+});
+
+export type ResultSchema = z.infer<typeof resultSchema>;
+
 
 
 
