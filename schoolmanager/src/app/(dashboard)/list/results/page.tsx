@@ -1,5 +1,4 @@
 import FormContainer from "@/components/FormContainer";
-import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import SortContainer from "@/components/SortContainer";
 import Table from "@/components/Table";
