@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 
 const parseDate = (dateStr: string): Date | null => {
-    const [day, month, year] = dateStr.split("/").map(Number);
+    const [day, month, year] = dateStr.split(/[./-]/).map(Number);
     if (!day || !month || !year) return null;
     return new Date(year, month - 1, day); // Month is zero-based
 };
@@ -35,7 +35,7 @@ const EventList = async ({ dateParam }: { dateParam: string | undefined }) => {
             <div className="flex items-center justify-between">
                 <h1 className="semi-bold text-gray-600">{event.title}</h1>
                 <span className="text-gray-300 text-xs">
-                    {new Date(event.startTime).toLocaleTimeString("en-GB", {
+                    {new Date(event.startTime).toLocaleTimeString("sq-AL", {
                         hour: "2-digit",
                         minute: "2-digit",
                         hour12: false,

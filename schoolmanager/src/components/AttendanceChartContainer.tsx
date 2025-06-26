@@ -17,29 +17,39 @@ const AttendanceChartContainer = async () => {
     });
 
 
-    const daysOfWeek = ["Mon","Tue","Wed","Thu","Fri"]
+    const daysOfWeek = ["Hën", "Mar", "Mër", "Enj", "Pre"]
 
     const attendanceMap : {[key:string]:{present:number,absent:number}} = {
-        Mon: {present:0, absent:0},
-        Tue: {present:0, absent:0},
-        Wed: {present:0, absent:0},
-        Thu: {present:0, absent:0},
-        Fri: {present:0, absent:0},
+        Hën: {present:0, absent:0},
+        Mar: {present:0, absent:0},
+        Mër: {present:0, absent:0},
+        Enj: {present:0, absent:0},
+        Pre: {present:0, absent:0},
     }
 
     resData.forEach(item=>{
         const itemDate = new Date(item.date)
+        const itemDay = itemDate.getDay(); 
+        const dayName = daysOfWeek[itemDay - 1];
 
-        if(dayOfWeek >=1 && dayOfWeek <=5){
-            const dayName = daysOfWeek[dayOfWeek - 1];
+    //     if(dayName){
+    //         const dayName = daysOfWeek[dayOfWeek - 1];
 
-            if(item.present){
-                attendanceMap[dayName].present += 1;
-            }else{
-                attendanceMap[dayName].absent += 1;
-            }
+    //         if(item.present){
+    //             attendanceMap[dayName].present += 1;
+    //         }else{
+    //             attendanceMap[dayName].absent += 1;
+    //         }
+    //     }
+    // })
+    if (dayName) {
+        if (item.present) {
+            attendanceMap[dayName].present += 1;
+        } else {
+            attendanceMap[dayName].absent += 1;
         }
-    })
+    }
+});
 
    const data = daysOfWeek.map((day)=>({
     name:day,
@@ -50,7 +60,7 @@ const AttendanceChartContainer = async () => {
     return (
         <div className="bg-white rounded-lg p-4 h-full">
             <div className="flex justify-between items-center">
-                <h1 className="text-lg font-semibold">Attendance</h1>
+                <h1 className="text-lg font-semibold">Vijushmëria</h1>
                 <Image src="/moreDark.png" alt="" width={20} height={20} className="" />
             </div>
             <AttendanceChart data={data}/>

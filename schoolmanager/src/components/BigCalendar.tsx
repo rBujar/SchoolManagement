@@ -5,6 +5,7 @@ import moment from "moment";
 import { useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
+
 const localizer = momentLocalizer(moment);
 
 const BigCalendar = ({
@@ -30,6 +31,10 @@ const BigCalendar = ({
             onView={handleOnChangeView}
             min={new Date(2025, 1, 0, 8, 0, 0)}
             max={new Date(2025, 1, 0, 17, 0, 0)}
+            messages={{
+                work_week: "Javore",
+                day: "Ditore",
+              }}
         />
     );
 };
