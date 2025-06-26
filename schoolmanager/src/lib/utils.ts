@@ -12,7 +12,7 @@ import { late } from "zod";
 
 // export { role, currentUserId };
 
-const getLatestMonday = () => {
+const getLatestMonday = (): Date => {
     const today = new Date();
     const dayOfWeek = today.getDay();
     const daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
