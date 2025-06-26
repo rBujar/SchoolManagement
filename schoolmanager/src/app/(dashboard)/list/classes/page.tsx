@@ -24,28 +24,28 @@ const ClassListPage = async ({
 
     const columns = [
         {
-            header: "Class Name",
+            header: "Emri i klasës",
             accessor: "name",
         },
         {
-            header: "Capacity",
+            header: "Kapaciteti",
             accessor: "capacity",
             className: "hidden md:table-cell",
         },
         {
-            header: "Grade",
+            header: "Viti shkollor",
             accessor: "grade",
             className: "hidden md:table-cell",
         },
         {
-            header: "Supervisor",
+            header: "Mbikëqyrësi",
             accessor: "supervisor",
             className: "hidden md:table-cell",
         },
         ...(role === "admin"
             ? [
                 {
-                    header: "Actions",
+                    header: "Veprime",
                     accessor: "actions",
                 },
             ]
@@ -143,7 +143,7 @@ const ClassListPage = async ({
         <div className="bg-white p4 rounded-md flex-1 m-4 mt-0">
             {/* TOP */}
             <div className="flex items-center justify-between">
-                <h1 className="hidden md:block text-lg font-semibold">All classes</h1>
+                <h1 className="hidden md:block text-lg font-semibold">Lista e klasave</h1>
                 <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
                     <TableSearch />
                     <div className="flex items-center gap-4 self-end">

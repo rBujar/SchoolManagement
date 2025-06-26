@@ -20,8 +20,9 @@ const StudentListPage = async ({
     }: {
     searchParams: { [key: string]: string | undefined };
     }) => {
-    const { sessionClaims } = await auth();
-    const role = (sessionClaims?.metadata as { role?: string })?.role;
+        const { userId, sessionClaims } = await auth();
+        const role = (sessionClaims?.metadata as { role?: string })?.role;
+        const currentUserId = userId;
 
 const columns = [
     {
@@ -29,28 +30,28 @@ const columns = [
         accessor: "info",
     },
     {
-        header: "Student Id",
+        header: "ID e nxënësit",
         accessor: "studentId",
         className: "hidden md:table-cell",
     },
     {
-        header: "Grade",
+        header: "Viti shkollor",
         accessor: "grade",
         className: "hidden md:table-cell",
     },
 
     {
-        header: "Phone",
+        header: "Telefoni",
         accessor: "phone",
         className: "hidden lg:table-cell",
     },
     {
-        header: "Address",
+        header: "Adresa",
         accessor: "address",
         className: "hidden lg:table-cell",
     },
     ...(role === "admin" ? [{
-        header: "Actions",
+        header: "Veprime",
         accessor: "actions",
     }]: []),
 ];
@@ -74,7 +75,7 @@ const renderRow = (item: StudentList) => (
             </div>
         </td>
         <td className="hidden md:table-cell">{item.username}</td>
-        <td className="hidden md:table-cell">{item.class.name[0]}</td>
+        <td className="hidden md:table-cell">{item.class.name[0] + item.class.name[1]}</td>
         <td className="hidden lg:table-cell">{item.phone}</td>
         <td className="hidden lg:table-cell">{item.address}</td>
         <td className="">
@@ -125,6 +126,36 @@ const renderRow = (item: StudentList) => (
         }
     }
 
+    switch (role) {
+        case "admin":
+            break;
+        case "teacher":
+            query.class = {
+                lessons: {
+                    some: {
+                        teacherId: currentUserId!,
+                    }
+                }
+            };
+            break;
+        case "student":
+            query.class = {
+                students: {
+                    some: { id: currentUserId! },
+                },
+            };
+            break;
+        case "parent":
+            query.class = {
+                students: {
+                    some: { parentId: currentUserId! },
+                },
+            };
+            break;
+        default:
+            break;
+    }
+
     const defaultSortOrder = sortOrder === "asc" ? "asc" : "desc";
 
     const [data, count] = await prisma.$transaction([
@@ -144,7 +175,7 @@ const renderRow = (item: StudentList) => (
         <div className="bg-white p4 rounded-md flex-1 m-4 mt-0">
             {/* TOP */}
             <div className="flex items-center justify-between">
-                <h1 className="hidden md:block text-lg font-semibold">All Students</h1>
+                <h1 className="hidden md:block text-lg font-semibold">Lista e nxënësve</h1>
                 <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
                     <TableSearch />
                     <div className="flex items-center gap-4 self-end">

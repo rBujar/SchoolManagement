@@ -39,6 +39,9 @@ const AttendanceChart = ({
                     align="left"
                     verticalAlign="top"
                     wrapperStyle={{ paddingTop: "20px", paddingBottom: "40px" }}
+                    formatter={(value) =>
+                        value === "present" ? "Prezentë" : "Mungojnë"
+                      }
                 />
                 <Bar
                     dataKey="present"

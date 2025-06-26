@@ -34,17 +34,17 @@ const AdminPage =  async ({
           </div>
         </div>
         {/* BOTTOM CHART */}
-        <div className="w-full h-[500px]">
-          <FinanceChart />
+        <div className="flex justify-center items-center overflow-auto bg-white shadow-md rounded-lg p-4 h-[400px]">
+          {/* <FinanceChart /> */}<Notes />
         </div>
       </div>
       {/* RIGHT */}
       <div className="w-full lg:w-1/3 flex flex-col gap-8 " >
         <EventCalendarContainer  searchParams={searchParams}/>
         <Announcements />
-        <div className=" flex justify-center items-center overflow-auto bg-white shadow-md rounded-lg p-4 h-[400px]"  >
-        <Notes />
-        </div>
+        {/* <div className=" flex justify-center items-center overflow-auto bg-white shadow-md rounded-lg p-4 h-[400px]"  >
+        
+        </div> */}
       </div>
     </div>
   );

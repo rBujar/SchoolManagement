@@ -31,20 +31,20 @@ const AssignmentListPage = async ({
 
 const columns = [
     {
-        header: "Subject Name",
+        header: "Emri i lëndës",
         accessor: "name",
     },
     {
-        header: "Class",
+        header: "Klasa",
         accessor: "class",
     },
     {
-        header: "Teacher",
+        header: "Mësimdhënësi",
         accessor: "teacher",
         className: "hidden md:table-cell",
     },
     {
-        header: "Date",
+        header: "Data",
         accessor: "date",
         className: "hidden md:table-cell",
     },
@@ -52,7 +52,7 @@ const columns = [
     ...(role === "admin" || role === "teacher"
         ? [
             {
-                header: "Actions",
+                header: "Veprime",
                 accessor: "actions",
             },
         ]
@@ -175,7 +175,7 @@ const renderRow = (item: AssignmentList) => (
             {/* TOP */}
             <div className="flex items-center justify-between">
                 <h1 className="hidden md:block text-lg font-semibold">
-                    All Assignments
+                    Lista e detyrave
                 </h1>
                 <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
                     <TableSearch />

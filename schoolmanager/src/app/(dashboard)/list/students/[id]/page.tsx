@@ -117,8 +117,8 @@ const SingleStudentPage = async ({
                                 className="w-6 h-6"
                             />
                             <div className="">
-                                <h1 className="text-xl font-semibold">{student.class.name.charAt(0)}th</h1>
-                                <span className="text-sm text-gray-400">Grade</span>
+                                <h1 className="text-xl font-semibold">{student.class.name.charAt(0) + student.class.name.charAt(1) }</h1>
+                                <span className="text-sm text-gray-400">Viti shkollor</span>
                             </div>
                         </div>
                         {/* CARD */}
@@ -132,7 +132,7 @@ const SingleStudentPage = async ({
                             />
                             <div className="">
                                 <h1 className="text-xl font-semibold">{student.class._count.lessons}</h1>
-                                <span className="text-sm text-gray-400">Lessons</span>
+                                <span className="text-sm text-gray-400">Orët mësimore</span>
                             </div>
                         </div>
                         {/* CARD */}
@@ -146,55 +146,55 @@ const SingleStudentPage = async ({
                             />
                             <div className="">
                                 <h1 className="text-xl font-semibold">{student.class.name}</h1>
-                                <span className="text-sm text-gray-400">Class</span>
+                                <span className="text-sm text-gray-400">Klasa</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 {/* BOTTOM */}
                 <div className="mt-4 bg-white rounded-md p-4 h-[800px]">
-                    <h1>Student&apos;s Schedule</h1>
+                    <h1>Orari i nxënësit</h1>
                     <BigCalendarContainer type="classId" id={student.class.id} />
                 </div>
             </div>
             {/* RIGHT */}
             <div className="w-full xl:w-1/3 flex flex-col gap-4">
                 <div className="bg-white p-4 rounded-md">
-                    <h1 className="text-xl font-semibold">Shortcuts</h1>
+                    <h1 className="text-xl font-semibold">Shkurtesat</h1>
                     <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray-500">
                         <Link
                             className="p-3 rounded-md bg-lamaSkyLight"
                             href={`/list/lessons?classId=${student.class.id}`}
                         >
-                            Student&apos;s Lessons
+                            Orët mësimore të nxënësit
                         </Link>
                         <Link
                             className="p-3 rounded-md bg-lamaPurpleLight"
                             href={`/list/teachers?classId=${student.class.id}`}
                         >
-                            Student&apos;s Teachers
+                            Mësimdhënësit e nxënësit
                         </Link>
                         <Link
                             className="p-3 rounded-md bg-pink-50"
                             href={`/list/exams?classId=${student.class.id}`}
                         >
-                            Student&apos;s Exams
+                            Provimet e nxënësit
                         </Link>
                         <Link
                             className="p-3 rounded-md bg-lamaSkyLight"
                             href={`/list/assignments?classId=${student.class.id}`}
                         >
-                            Student&apos;s Assignments
+                            Detyrat e nxënësit
                         </Link>
                         <Link
                             className="p-3 rounded-md bg-lamaYellowLight"
                             href={`/list/results?studentId=${student.class.id}`}
                         >
-                            Student&apos;s Results
+                            Rezultatet e nxënësit
                         </Link>
                     </div>
                 </div>
-                <Performance />
+                {/* <Performance /> */}
                 <Announcements />
             </div>
         </div>

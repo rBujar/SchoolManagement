@@ -27,23 +27,23 @@ const AnnouncementListPage = async ({
 
 const columns = [
     {
-        header: "Title",
+        header: "Titulli",
         accessor: "title",
     },
     {
-        header: "Class",
+        header: "Klasa",
         accessor: "class",
 
     },
     {
-        header: "Date",
+        header: "Data",
         accessor: "date",
         className: "hidden md:table-cell",
 
     },
 
     ...(role=== "admin" ? [{
-        header: "Actions",
+        header: "Veprime",
         accessor: "actions",
     }] : [])
 ];
@@ -149,7 +149,7 @@ const renderRow = (item: AnnouncementList) => (
         <div className="bg-white p4 rounded-md flex-1 m-4 mt-0">
             {/* TOP */}
             <div className="flex items-center justify-between">
-                <h1 className="hidden md:block text-lg font-semibold">All Announcements</h1>
+                <h1 className="hidden md:block text-lg font-semibold">Lista e lajmërimeve</h1>
                 <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
                     <TableSearch />
                     <div className="flex items-center gap-4 self-end">

@@ -37,30 +37,30 @@ const AttendanceListPage = async ({
 
     const columns = [
         {
-            header: "Student name",
+            header: "Emri i nxënësit",
             accessor: "studentName",
         },
         {
-            header: "Subject",
+            header: "Lënda",
             accessor: "subject",
         },
         {
-            header: "Class",
+            header: "Klasa",
             accessor: "class",
             className: "hidden md:table-cell",
         },
         {
-            header: "Teacher",
+            header: "Mësimdhënësi",
             accessor: "teacher",
             className: "hidden md:table-cell",
         },
         {
-            header: "Date",
+            header: "Data",
             accessor: "date",
             className: "hidden md:table-cell",
         },
         {
-            header: "Present",
+            header: "Prezenca",
             accessor: "present",
             className: "hidden md:table-cell",
         },
@@ -68,7 +68,7 @@ const AttendanceListPage = async ({
     
             
                 {
-                    header: "Actions",
+                    header: "Veprime",
                     accessor: "action",
                 },
     ];
@@ -192,7 +192,7 @@ const AttendanceListPage = async ({
             {/* TOP */}
             <div className="flex items-center justify-between">
                 <h1 className="hidden md:block text-lg font-semibold">
-                    All Attendance
+                    Lista e prezencës
                 </h1>
                 <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
                     <TableSearch />

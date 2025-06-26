@@ -12,7 +12,7 @@ const TeacherPage = async () => {
       {/* LEFT */}
       <div className="w-full xl:2/3">
       <div className="h-full bg-white p4 rounded-md">
-        <h1 className="text-xl font-semibold">Schedule</h1>
+        <h1 className="text-xl font-semibold">Orari i mësimeve</h1>
         <BigCalendarContainer type="teacherId" id={userId!}/>
       </div>
       </div>

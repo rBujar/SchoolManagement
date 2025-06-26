@@ -5,8 +5,8 @@ const Announcements = async () => {
     const { userId, sessionClaims } = await auth();
     const role = (sessionClaims?.metadata as { role?: string })?.role;
 
-    const thisWeek = new Date();
-    thisWeek.setDate(thisWeek.getDate() - 14)
+    // const thisWeek = new Date();
+    // thisWeek.setDate(thisWeek.getDate() - 14)
 
     const roleConditions = {
         teacher: { lessons: { some: { teacherId: userId! } } },
@@ -18,9 +18,6 @@ const Announcements = async () => {
         take: 3,
         orderBy: { date: "desc" },
         where: {
-            date:{
-                gte: thisWeek,
-            },
             ...(role !== "admin" && {
                 OR: [
                     { classId: null },
@@ -28,13 +25,16 @@ const Announcements = async () => {
                 ],
             }),
         },
+        
     });
+
+    
 
     return (
         <div className="bg-white p-4 rounded-md">
             <div className="flex items-center justify-between ">
-                <h1 className="text-xl font-semibold">Announcements</h1>
-                <span className="text-xs text-gray-400">View All</span>
+                <h1 className="text-xl font-semibold">Lajmërimet</h1>
+                <span className="text-xs text-gray-400"></span>
             </div>
             <div className="flex flex-col gap-4 mt-4">
                 {data[0] && (
@@ -51,12 +51,12 @@ const Announcements = async () => {
                 {data[1] && (
                     <div className="bg-lamaPurpleLight rounded-md p-4">
                         <div className="flex items-center justify-between">
-                            <h2 className="font-medium">{data[1].title}.</h2>
+                            <h2 className="font-medium">{data[1].title}</h2>
                             <span className="text-xs text-gray-400 bg-white rounded-md px-1 py-1">
                                 {new Intl.DateTimeFormat("en-GB").format(data[1].date)}
                             </span>
                         </div>
-                        <p className="text-sm text-gray-400 mt-1">{data[1].description}.</p>
+                        <p className="text-sm text-gray-400 mt-1">{data[1].description}</p>
                     </div>
                 )}
                 {data[2] && (
