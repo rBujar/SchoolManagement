@@ -45,7 +45,7 @@ const EventForm = ({
 
     useEffect(() => {
         if (state.success) {
-            toast(`Event has been ${type === "create" ? "created" : "updated"}!`);
+            toast(`Eventi është ${type === "create" ? "krijuar" : "përditësuar"}!`);
             setOpen(false);
             router.refresh();
         }
@@ -58,26 +58,26 @@ const EventForm = ({
     return (
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-xl font-semibold">
-                {type === "create" ? "Create a new Event" : "Update the Event"}
+                {type === "create" ? "Krijo një event" : "Përditëso eventin"}
             </h1>
 
             <div className="flex justify-between flex-wrap gap-4">
                 <InputField
-                    label="Event Title"
+                    label="Titulli i eventit"
                     name="title"
                     defaultValue={data?.title}
                     register={register}
                     error={errors?.title}
                 />
                 <InputField
-                    label="Description"
+                    label="Përshkrimi"
                     name="description"
                     defaultValue={data?.description}
                     register={register}
                     error={errors?.description}
                 />
                 <InputField
-                    label="Start Time"
+                    label="Koha e fillimit"
                     name="startTime"
                     defaultValue={data?.startTime}
                     register={register}
@@ -85,7 +85,7 @@ const EventForm = ({
                     type="datetime-local"
                 />
                 <InputField
-                    label="End Time"
+                    label="Koha e mbarimit"
                     name="endTime"
                     defaultValue={data?.endTime}
                     register={register}
@@ -104,12 +104,13 @@ const EventForm = ({
                 )}
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Classes</label>
+                    <label className="text-xs text-gray-500">Klasa</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("classId")}
                         defaultValue={data?.classId}
                     >
+                        <option value="" disabled className="text-gray-400 opacity-70">Zgjedh klasën</option>
                         {classes.map(
                             (classItem: { id: string; name: string; }) => (
                                 <option value={classItem.id} key={classItem.id} defaultValue={classItem.name} >
@@ -128,11 +129,11 @@ const EventForm = ({
             </div>
 
             {state.error && (
-                <span className="text-red-500">Something went wrong!</span>
+                <span className="text-red-500">Ka ndodhur një gabim!</span>
             )}
 
             <button className="bg-blue-400 text-white p-2 rounded-md">
-                {type === "create" ? "Create" : "Update"}
+                {type === "create" ? "Krijo" : "Përditëso"}
             </button>
         </form>
     );

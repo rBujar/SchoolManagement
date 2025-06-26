@@ -62,7 +62,7 @@ const AttendanceForm = ({
     useEffect(() => {
         if (state.success) {
             toast(
-                `Attendance has been ${type === "create" ? "created" : "updated"}!`
+                `Vijueshmëria është ${type === "create" ? "krijuar" : "përditësuar"}!`
             );
             setOpen(false);
             router.refresh();
@@ -76,8 +76,8 @@ const AttendanceForm = ({
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-xl font-semibold">
                 {type === "create"
-                    ? "Create a new Attendance"
-                    : "Update the Attendance"}
+                    ? "Krijo një vijueshmëri"
+                    : "Përditësoni Vijueshmërin"}
             </h1>
 
             <div className="flex justify-between flex-wrap gap-4">
@@ -96,7 +96,7 @@ const AttendanceForm = ({
                 )}
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Lessons</label>
+                    <label className="text-xs text-gray-500">Ora mësimore</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("lessonId")}
@@ -120,7 +120,7 @@ const AttendanceForm = ({
                 </div>
 
                 <InputField
-                    label="Date"
+                    label="Data"
                     name="date"
                     defaultValue={data?.date}
                     register={register}
@@ -129,7 +129,7 @@ const AttendanceForm = ({
                     />
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Students</label>
+                    <label className="text-xs text-gray-500">Nxënësi</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("studentId")}
@@ -155,7 +155,7 @@ const AttendanceForm = ({
                 </div>
 
                 <div className="flex  gap-2 w-full md:w-1/2">
-                    <label className="text-md ">Is the student present?</label>
+                    <label className="text-md ">A është nxënësi prezent?</label>
                     <input
                         type="checkbox"
                         {...register("present")}
@@ -171,11 +171,11 @@ const AttendanceForm = ({
             </div>
 
             {state.error && (
-                <span className="text-red-500">Something went wrong!</span>
+                <span className="text-red-500">Ka ndodhur një gabim!</span>
             )}
 
             <button className="bg-blue-400 text-white p-2 rounded-md">
-                {type === "create" ? "Create" : "Update"}
+                {type === "create" ? "Krijo" : "Përditëso"}
             </button>
         </form>
     );

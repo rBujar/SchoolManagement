@@ -65,7 +65,7 @@ const StudentForm = ({
 
     useEffect(() => {
         if (state.success) {
-            toast(`Student has been ${type === "create" ? "created" : "updated"}!`);
+            toast(`Nxënësi është ${type === "create" ? "krijuar" : "përditësuar"}!`);
             setOpen(false);
             router.refresh();
         }
@@ -76,15 +76,15 @@ const StudentForm = ({
     return (
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-xl font-semibold">
-                {type === "create" ? "Create a new student" : "Update the student"}
+                {type === "create" ? "Krijo një nxënës" : "Përditëso një nxënës"}
             </h1>
             <span className="text-xs text-gray-400 font-medium">
-                Authentication Information
+                Informacioni i autentifikimit
             </span>
 
             <div className="flex justify-between flex-wrap gap-4">
                 <InputField
-                    label="Username"
+                    label="Emri i përdoruesit"
                     name="username"
                     defaultValue={data?.username}
                     register={register}
@@ -99,7 +99,7 @@ const StudentForm = ({
                     error={errors?.email}
                 />
                 <InputField
-                    label="Password"
+                    label="Fjalëkalimi"
                     name="password"
                     type="password"
                     defaultValue={data?.password}
@@ -109,7 +109,7 @@ const StudentForm = ({
             </div>
 
             <span className="text-xs text-gray-400 font-medium">
-                Personal Information
+                Informacionet personale
             </span>
 
             <CldUploadWidget
@@ -126,7 +126,7 @@ const StudentForm = ({
                             onClick={() => open()}
                         >
                             <Image src="/upload.png" alt="" width={28} height={28} />
-                            <span>Upload a photo</span>
+                            <span>Ngarko një foto</span>
                         </div>
                     );
                 }}
@@ -134,42 +134,42 @@ const StudentForm = ({
 
             <div className="flex justify-between flex-wrap gap-4">
                 <InputField
-                    label="First name"
+                    label="Emri"
                     name="name"
                     defaultValue={data?.name}
                     register={register}
                     error={errors.name}
                 />
                 <InputField
-                    label="Last name"
+                    label="Mbiemri"
                     name="surname"
                     defaultValue={data?.surname}
                     register={register}
                     error={errors.surname}
                 />
                 <InputField
-                    label="Phone"
+                    label="Telefoni"
                     name="phone"
                     defaultValue={data?.phone}
                     register={register}
                     error={errors.phone}
                 />
                 <InputField
-                    label="Address"
+                    label="Adresa"
                     name="address"
                     defaultValue={data?.address}
                     register={register}
                     error={errors.address}
                 />
                 <InputField
-                    label="Blood type"
+                    label="Grupi i gjakut"
                     name="bloodType"
                     defaultValue={data?.bloodType}
                     register={register}
                     error={errors.bloodType}
                 />
                 <InputField
-                    label="Birthday"
+                    label="Ditëlindja"
                     name="birthday"
                     defaultValue={data?.birthday.toISOString().split("T")[0]}
                     register={register}
@@ -177,7 +177,7 @@ const StudentForm = ({
                     type="date"
                 />
                 <InputField
-                    label="Parent Id"
+                    label="ID e prindit"
                     name="parentId"
                     defaultValue={data?.parentId}
                     register={register}
@@ -195,14 +195,14 @@ const StudentForm = ({
                 )}
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Sex</label>
+                    <label className="text-xs text-gray-500">Gjinia</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("sex")}
                         defaultValue={data?.sex}
                     >
-                        <option value="MALE">Male</option>
-                        <option value="FEMALE">Female</option>
+                        <option value="MALE">Mashkull</option>
+                        <option value="FEMALE">Femër</option>
                     </select>
                     {errors.sex?.message && (
                         <p className="text-xs text-red-400">
@@ -211,7 +211,7 @@ const StudentForm = ({
                     )}
                 </div>
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Grade</label>
+                    <label className="text-xs text-gray-500">Viti shkollor</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("gradeId")}
@@ -230,7 +230,7 @@ const StudentForm = ({
                     )}
                 </div>
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Class</label>
+                    <label className="text-xs text-gray-500">Klasa</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("classId")}
@@ -246,7 +246,7 @@ const StudentForm = ({
                                 <option value={classItem.id} key={classItem.id}>
                                     ({classItem.name} -{" "}
                                     {classItem._count.students + "/" + classItem.capacity}{" "}
-                                    Capacity)
+                                    Kapaciteti)
                                 </option>
                             )
                         )}
@@ -260,11 +260,11 @@ const StudentForm = ({
             </div>
 
             {state.error && (
-                <span className="text-red-500">Something went wrong!</span>
+                <span className="text-red-500">Ka ndodhur një gabim!</span>
             )}
 
             <button className="bg-blue-400 text-white p-2 rounded-md">
-                {type === "create" ? "Create" : "Update"}
+                {type === "create" ? "Krijo" : "Përditëso"}
             </button>
         </form>
     );

@@ -123,12 +123,12 @@ const Notes = () => {
             
             <div className="mb-4 bg-white p-4 rounded-md shadow-md">
                 <div className="flex justify-between items-center">
-                    <h1 className="text-xl font-bold">Notes</h1>
+                    <h1 className="text-xl font-bold">Shënimet</h1>
                     <button
                         onClick={() => setShowForm(!showForm)} 
                         className="bg-blue-300 text-white px-4 py-2 rounded-md"
                     >
-                        {showForm ? "Close" : "Add Note"}
+                        {showForm ? "Mbylle" : "Shto shënim"}
                     </button>
                 </div>
 
@@ -136,13 +136,13 @@ const Notes = () => {
                     <div className="mt-4">
                         <input
                             type="text"
-                            placeholder="Title"
+                            placeholder="Titulli"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             className="w-full border border-gray-300 rounded-md p-2 mb-2"
                         />
                         <textarea
-                            placeholder="Content"
+                            placeholder="Përmbajtja"
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             className="w-full border border-gray-300 rounded-md p-2 mb-2"
@@ -151,7 +151,7 @@ const Notes = () => {
                             onClick={saveNote}
                             className="bg-green-500 text-white px-4 py-2 rounded-md"
                         >
-                            {editId ? "Update Note" : "Save Note"}
+                            {editId ? "Përditëso Shënimin" : "Ruaj Shënimin"}
                         </button>
                         {error && <p className="text-red-500 mt-2">{error}</p>}
                     </div>

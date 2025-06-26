@@ -58,7 +58,7 @@ const LessonForm = ({
 
     useEffect(() => {
         if (state.success) {
-            toast(`Lesson has been ${type === "create" ? "created" : "updated"}!`);
+            toast(`Ora mësimore është ${type === "create" ? "krijuar" : "përditësuar"}!`);
             setOpen(false);
             router.refresh();
         }
@@ -70,19 +70,19 @@ const LessonForm = ({
     return (
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-xl font-semibold">
-                {type === "create" ? "Create a new lesson" : "Update the lesson"}
+                {type === "create" ? "Krijo një orë mësimore" : "Përditëso orën mësimore"}
             </h1>
 
             <div className="flex justify-between flex-wrap gap-4">
                 <InputField
-                    label="Lesson name"
+                    label="Emri i orës mësimore"
                     name="name"
                     defaultValue={data?.name}
                     register={register}
                     error={errors?.name}
                 />
                 <InputField
-                    label="Start Date"
+                    label="Data e fillimit"
                     name="startTime"
                     defaultValue={data?.startTime}
                     register={register}
@@ -90,7 +90,7 @@ const LessonForm = ({
                     type="datetime-local"
                 />
                 <InputField
-                    label="End Date"
+                    label="Data e mbarimit"
                     name="endTime"
                     defaultValue={data?.endTime}
                     register={register}
@@ -99,17 +99,17 @@ const LessonForm = ({
                 />
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Day</label>
+                    <label className="text-xs text-gray-500">Dita</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("day")}
                         defaultValue={data?.day}
                     >
-                        <option value="MONDAY">Monday</option>
-                        <option value="TUESDAY">Tuesday</option>
-                        <option value="WEDNESDAY">Wednesday</option>
-                        <option value="THURSDAY">Thursday</option>
-                        <option value="FRIDAY">Friday</option>
+                        <option value="MONDAY">E Hënë</option>
+                        <option value="TUESDAY">E Martë</option>
+                        <option value="WEDNESDAY">E Mërkurë</option>
+                        <option value="THURSDAY">E Enjte</option>
+                        <option value="FRIDAY">E Premte</option>
                     </select>
                     {errors.day?.message && (
                         <p className="text-xs text-red-400">
@@ -130,7 +130,7 @@ const LessonForm = ({
                 )}
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Teachers</label>
+                    <label className="text-xs text-gray-500">Mësimdhënësit</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("teacherId")}
@@ -151,7 +151,7 @@ const LessonForm = ({
                     )}
                 </div>
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Subjects</label>
+                    <label className="text-xs text-gray-500">Lëndët</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("subjectId")}
@@ -170,7 +170,7 @@ const LessonForm = ({
                     )}
                 </div>
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Classes</label>
+                    <label className="text-xs text-gray-500">Klasat</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("classId")}
@@ -191,11 +191,11 @@ const LessonForm = ({
             </div>
 
             {state.error && (
-                <span className="text-red-500">Something went wrong!</span>
+                <span className="text-red-500">Ka ndodhur një gabim!</span>
             )}
 
             <button className="bg-blue-400 text-white p-2 rounded-md">
-                {type === "create" ? "Create" : "Update"}
+                {type === "create" ? "Krijo" : "Përditëso"}
             </button>
         </form>
     );

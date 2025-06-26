@@ -66,7 +66,7 @@ const ResultForm = ({
     useEffect(() => {
         if (state.success) {
             toast(
-                `Result has been ${type === "create" ? "created" : "updated"}!`
+                `Rezultati është ${type === "create" ? "krijuar" : "përditësuar"}!`
             );
             setOpen(false);
             router.refresh();
@@ -80,14 +80,14 @@ const ResultForm = ({
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-xl font-semibold">
                 {type === "create"
-                    ? "Create a new Attendance"
-                    : "Update the Attendance"}
+                    ? "Krijo një rezultat"
+                    : "Përditëso rezultatin"}
             </h1>
 
             <div className="flex justify-between flex-wrap gap-4">
 
             <InputField
-                    label="Score"
+                    label="Pikët"
                     name="score"
                     defaultValue={data?.score}
                     register={register}
@@ -106,12 +106,13 @@ const ResultForm = ({
                 )}
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Students</label>
+                    <label className="text-xs text-gray-500">Nxënësi</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("studentId")}
                         defaultValue={data?.studentId}
                     >
+                        <option value="" disabled className="text-gray-400 opacity-70">Zgjedh një nxënës</option>
                         {students.map(
                             (student: { id: string; name: string; surname: string }) => (
                                 <option
@@ -132,13 +133,13 @@ const ResultForm = ({
                 </div>
                     
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Exam</label>
+                    <label className="text-xs text-gray-500">Provimi</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("examId")}
                         defaultValue={data?.examId || ""}
                     >
-                        <option value=""></option>
+                        <option value="" disabled className="text-gray-400 opacity-70">Zgjedh një provim</option>
                         {exams.map(
                             (exam: { id: string; title: string }) => (
                                 <option
@@ -158,13 +159,13 @@ const ResultForm = ({
                     )}
                 </div>
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Assignment</label>
+                    <label className="text-xs text-gray-500">Detyra</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("assignmentId")}
                         defaultValue={data?.assignmentId || ""}
                     >
-                        <option value=""></option>
+                        <option value="" disabled className="text-gray-400 opacity-70">Zgjedh një detyrë</option>
                         {assignments.map(
                             (assignment: { id: string; title: string }) => (
                                 <option
@@ -189,11 +190,11 @@ const ResultForm = ({
             </div>
 
             {state.error && (
-                <span className="text-red-500">Something went wrong!</span>
+                <span className="text-red-500">Ka ndodhur një gabim!</span>
             )}
 
             <button className="bg-blue-400 text-white p-2 rounded-md">
-                {type === "create" ? "Create" : "Update"}
+                {type === "create" ? "Krijo" : "Përditëso"}
             </button>
         </form>
     );

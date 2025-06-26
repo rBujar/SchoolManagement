@@ -65,7 +65,7 @@ const ParentForm = ({
 
     useEffect(() => {
         if (state.success) {
-            toast(`Parent has been ${type === "create" ? "created" : "updated"}!`);
+            toast(`Prindi është ${type === "create" ? "krijuar" : "përditësuar"}!`);
             setOpen(false);
             router.refresh();
         }
@@ -76,15 +76,15 @@ const ParentForm = ({
     return (
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-xl font-semibold">
-                {type === "create" ? "Create a new parent" : "Update the parent"}
+                {type === "create" ? "Krijo një prind" : "Përditëso prindin"}
             </h1>
             <span className="text-xs text-gray-400 font-medium">
-                Authentication Information
+                Informacioni i autentifikimit
             </span>
 
             <div className="flex justify-between flex-wrap gap-4">
                 <InputField
-                    label="Username"
+                    label="Emri i përdoruesit"
                     name="username"
                     defaultValue={data?.username}
                     register={register}
@@ -99,7 +99,7 @@ const ParentForm = ({
                     error={errors?.email}
                 />
                 <InputField
-                    label="Password"
+                    label="Fjalëkalimi"
                     name="password"
                     type="password"
                     defaultValue={data?.password}
@@ -109,33 +109,33 @@ const ParentForm = ({
             </div>
 
             <span className="text-xs text-gray-400 font-medium">
-                Personal Information
+                Informacionet personale
             </span>
 
             <div className="flex justify-between flex-wrap gap-4">
                 <InputField
-                    label="First name"
+                    label="Emri"
                     name="name"
                     defaultValue={data?.name}
                     register={register}
                     error={errors.name}
                 />
                 <InputField
-                    label="Last name"
+                    label="Mbiemri"
                     name="surname"
                     defaultValue={data?.surname}
                     register={register}
                     error={errors.surname}
                 />
                 <InputField
-                    label="Phone"
+                    label="Telefoni"
                     name="phone"
                     defaultValue={data?.phone}
                     register={register}
                     error={errors.phone}
                 />
                 <InputField
-                    label="Address"
+                    label="Adresa"
                     name="address"
                     defaultValue={data?.address}
                     register={register}
@@ -154,7 +154,7 @@ const ParentForm = ({
                 )}
 
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
-                    <label className="text-xs text-gray-500">Students</label>
+                    <label className="text-xs text-gray-500">Nxënësit</label>
                     <select
                         multiple
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
@@ -176,11 +176,11 @@ const ParentForm = ({
             </div>
 
             {state.error && (
-                <span className="text-red-500">Something went wrong!</span>
+                <span className="text-red-500">Ka ndodhur një gabim!</span>
             )}
 
             <button className="bg-blue-400 text-white p-2 rounded-md">
-                {type === "create" ? "Create" : "Update"}
+                {type === "create" ? "Krijo" : "Përditëso"}
             </button>
         </form>
     );
