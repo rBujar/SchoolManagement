@@ -48,7 +48,7 @@ const TeacherForm = ({
 
     useEffect(() => {
         if (data?.img) {
-            setImg({ secure_url: data.img }); // Pre-fill img for edit
+            setImg({ secure_url: data.img });
         }
     }, [data]);
 

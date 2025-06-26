@@ -58,12 +58,18 @@ const StudentForm = ({
     const router = useRouter();
 
     useEffect(() => {
+        if (data?.img) {
+            setImg({ secure_url: data.img});
+        }
+    }, [data]);
+
+    useEffect(() => {
         if (state.success) {
             toast(`Student has been ${type === "create" ? "created" : "updated"}!`);
             setOpen(false);
             router.refresh();
         }
-    }, [state]);
+    }, [state, router, type, setOpen]);
 
     const { grades, classes } = relatedData;
 

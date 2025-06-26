@@ -58,7 +58,7 @@ const EventForm = ({
     return (
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-xl font-semibold">
-                {type === "create" ? "Create a new Announcement" : "Update the Announcement"}
+                {type === "create" ? "Create a new Event" : "Update the Event"}
             </h1>
 
             <div className="flex justify-between flex-wrap gap-4">
