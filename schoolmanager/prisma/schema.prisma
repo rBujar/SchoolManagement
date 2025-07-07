@@ -10,6 +10,8 @@ datasource db {
 model Admin {
   id       String @id
   username String @unique
+  name        String @default("admin")
+  surname     String @default("admin")
 }
 
 model Student {
@@ -50,7 +52,6 @@ model Teacher {
   subjects  Subject[]
   lessons   Lesson[]
   classes   Class[]
-  results     Result[]
   birthday  DateTime
 }
 
@@ -87,7 +88,7 @@ model Class {
   announcements Announcement[]
   events        Event[]
   createdAt DateTime  @default(now())
-}
+} 
 
 model Subject {
   id       Int       @id @default(autoincrement())
@@ -120,7 +121,6 @@ model Exam {
   title     String
   startTime DateTime
   endTime   DateTime
-
   lessonId Int
   lesson   Lesson   @relation(fields: [lessonId], references: [id])
   results  Result[]
@@ -141,16 +141,17 @@ model Assignment {
 model Result {
   id    Int @id @default(autoincrement())
   score Int
+
   examId       Int?
   exam         Exam?       @relation(fields: [examId], references: [id])
   assignmentId Int?
   assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   studentId    String
   student      Student     @relation(fields: [studentId], references: [id])
-  teacherId    String
-  teacher      Teacher     @relation(fields: [teacherId], references: [id])
   createdAt DateTime  @default(now())
+
 }
+
 
 model Attendance {
   id      Int      @id @default(autoincrement())
@@ -180,6 +181,10 @@ model Announcement {
   classId     Int?
   class       Class?   @relation(fields: [classId], references: [id])
 }
+
+// npx prisma migrate dev
+
+
 
 enum UserSex {
   MALE
